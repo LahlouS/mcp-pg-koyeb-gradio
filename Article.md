@@ -15,7 +15,7 @@ In this tutorial, I’ll show you how it works and how we can deploy it effortle
 ---
 ## 📚 Table of Contents
 
-- [[#Quick Recap on MCP]]
+- [Quick Recap on MCP](#quick-recap-on-mcp)
 - [[#1) First, We Need a Database]]
   - [[#Building the database]]
   - [[#How to easily deploy our database to Koyeb ?]]
