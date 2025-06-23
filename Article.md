@@ -672,7 +672,7 @@ To keep this tutorial concise, I’m not showing the implementation details of t
 
 ### Testing the server
 
-Once the server is deployed on Koyeb, we can try out our server using Claude Desktop.
+Once the server is deployed on Koyeb, we can try it out using Claude Desktop.
 the result you'll get might vary a lot depending on the client you use.
 
 Claude Desktop seem to be most easy to use with the best results. 
