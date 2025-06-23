@@ -76,7 +76,7 @@ The [MCP library](https://modelcontextprotocol.io/docs/concepts/resources) you u
 From there, every function you’ve coded becomes accessible simply by appending its name to the URL:
 
 ```sh
-/sse/get_real_time_data
+mcp/sse/<my_tool>
 ```
 
 That’s how the client interacts with your server.
