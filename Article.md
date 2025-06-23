@@ -19,7 +19,7 @@ In this tutorial, I’ll show you how it works and how we can deploy it effortle
 - [1) First, We Need a Database](#1-first-we-need-a-database)
   - [Building the database](#building-the-database)
   - [How to easily deploy our database to Koyeb ?](#how-to-easily-deploy-our-database-to-koyeb-)
-- [2) Building the Gradio interface](#gradio-interface)
+- [2) Building the Gradio interface](#2-gradio-interface)
   - [The Workflow of Exposing Tools](#the-workflow-of-exposing-tools)
   - [Deploying on Koyeb](#deploying-on-koyeb)
   - [Testing the server](#testing-the-server)
