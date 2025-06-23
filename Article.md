@@ -72,16 +72,9 @@ A _typical configuration in Claude Desktop_ might look like this:
 ```
 
 The [MCP library](https://modelcontextprotocol.io/docs/concepts/resources) you use generates a standardized “documentation” about the tools and resources that you expose. The model retrieves it when connecting to the endpoint you defined,`/sse` with Gradio.
+That’s how the client interacts with your server. [more details there](https://modelcontextprotocol.io/docs/concepts/transports).
 
-From there, every function you’ve coded becomes accessible simply by appending its name to the URL:
-
-```sh
-mcp/sse/<my_tool>
-```
-
-That’s how the client interacts with your server.
-
-Now here’s where _**Gradio**_ shines!  
+Now here’s where _**Gradio**_ shines!
 They’ve recently released a feature that abstracts all the complexity behind a simple interface:  
 You can turn _any_ Gradio app into an MCP server with a single line of code:
 ```python
