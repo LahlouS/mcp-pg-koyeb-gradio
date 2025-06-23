@@ -112,7 +112,7 @@ In this tutorial, we’ll use this feature to build a simple PostgreSQL connecto
 - hdbscan
 - statsmodels >= 0.14.0
 
-=> *You can find the full repo at* `<address of the repo>`
+=> *You can find the full repo at `https://github.com/LahlouS/mcp-pg-koyeb-gradio/`
 
 ---
 
