@@ -72,7 +72,8 @@ A _typical configuration in Claude Desktop_ might look like this:
 ```
 
 The [MCP library](https://modelcontextprotocol.io/docs/concepts/resources) you use generates a standardized “documentation” about the tools and resources that you expose. The model retrieves it when connecting to the endpoint you defined,`/sse` with Gradio.
-That’s how the client interacts with your server. [more about the transport layer](https://modelcontextprotocol.io/docs/concepts/transports).
+That’s how the client interacts with your server. 
+[More about the transport layer](https://modelcontextprotocol.io/docs/concepts/transports).
 
 Now here’s where _**Gradio**_ shines!
 They’ve recently released a feature that abstracts all the complexity behind a simple interface:  
