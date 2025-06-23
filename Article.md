@@ -17,12 +17,12 @@ In this tutorial, I’ll show you how it works and how we can deploy it effortle
 
 - [Quick Recap on MCP](#quick-recap-on-mcp)
 - [1) First, We Need a Database](#1-first-we-need-a-database)
-  - [[#Building the database]]
-  - [[#How to easily deploy our database to Koyeb ?]]
-- [[#2) Gradio interface]]
-  - [[#The Workflow of Exposing Tools]]
-  - [[#Deploying on Koyeb]]
-  - [[#Testing the server]]
+  - [Building the database](#building-the-database)
+  - [How to easily deploy our database to Koyeb ?](#how-to-easily-deploy-our-database-to-koyeb)
+- [2) Building the Gradio interface](#gradio-interface)
+  - [The Workflow of Exposing Tools](#the-workflow-of-exposing-tools)
+  - [Deploying on Koyeb](#deploying-on-koyeb)
+  - [Testing the server](#testing-the-server)
 - [Conclusion](#conclusion)
 
 ---
