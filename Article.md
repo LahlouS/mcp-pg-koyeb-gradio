@@ -199,7 +199,7 @@ COMMENT ON TABLE transactions IS 'Records customer transactions, linking a custo
 ### How to easily deploy our database to Koyeb ?
 - #### Creation of the database
 
-
+==STILL NEED TO BE VERIFIED== 
 
 We have our database migrations ready, now we want to deploy the database itself.
 For this, we'll use the ***Koyeb CLI*** to do it in just one command.
