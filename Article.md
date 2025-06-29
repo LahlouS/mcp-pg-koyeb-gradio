@@ -196,7 +196,116 @@ COMMENT ON TABLE transactions IS 'Records customer transactions, linking a custo
 
 
 ### How to easily deploy our database to Koyeb ?
--> ==NOT IMPLEMENTED YET==
+- ##### Creation of the database
+==STILL NEED TO BE VERIFIED==
+***Great !***
+we have our database migrations ready but now we want to deploy it.
+For that we'll use **koyeb** and it's ***CLI*** to make it in just 5 command.
+
+With Koyeb we can create a PostgreSQL database like that:
+```sh
+koyeb databases create NAME [flags]
+```
+
+In our case:
+```sh
+koyeb databases create koyeb_gradio_mcp \
+					--app koyeb_gradio_mcp/hAndMdb \
+					--db-owner admin
+					--instance-type small
+					--pg-version 17
+					
+```
+
+***Voila***, our database is ready to accept connection.
+You can test that its working using the following command:
+```bash
+psql <YOUR DATABASE_CONNECTION_STRING>
+```
+
+then in the prompt, running the following command:
+```sql
+SELECT datname FROM pg_database WHERE datistemplate = false;
+```
+should give you something like that:
+```
+datname  
+----------
+ postgres
+ hAndMdb // our database
+(2 rows)
+```
+
+- ##### Migrations
+
+Now we want to migrate the schema and the actual data.
+For the schema, we'll use the default public one, you can simply use psql with the `-f my_file` option like below with the migration file showed above:
+```shell
+psql <YOUR DATABASE_CONNECTION_STRING> -f database/00_init.sql
+psql <YOUR DATABASE_CONNECTION_STRING> -f database/01_comment_tables.sql
+```
+
+Also, in the repository of the article, I left you with a `database/run_migration.py` script.
+It use `psycopg2` to connect to the DB, and run all migrations in a folder. It also create a table `migrations` that keep tracks of previous migrations, its convenient, **feel free to use it**.
+
+Finally, to populate the DB with the H&M dataset *(or whatever dataset you want to use)* feel free to use your favorite method.
+
+**however**, I provided you with a `database/populate_db.py`.
+```python
+# Load environment variables from .env file
+load_dotenv()
+
+# Fetch environment variables
+DB_NAME = os.getenv("DB_NAME")
+DB_USER = os.getenv("POSTGRES_USER")
+DB_PASSWORD = os.getenv("POSTGRES_PASSWORD")
+DB_HOST = os.getenv("DB_HOST")
+DB_PORT = os.getenv("DB_PORT", 5432)
+
+#
+# SEE REPO FOR IMPLEMENTATION DETAILS
+#
+
+if __name__ == "__main__":
+	try:
+		customers_df = load_customers('./customers_df_filtered.csv')
+		articles_df = load_articles('./articles.csv')
+		transactions_df = load_transactions('./transaction_sample.csv')
+
+		connection = connect_to_db()
+
+		for df, table in [
+			(customers_df, "customers"),
+			(articles_df, "articles"),
+			(transactions_df, "transactions")
+		]:
+
+			expected_columns = get_table_columns(connection, table)
+			assert check_columns_in_df(df, expected_columns), f"DataFrame columns do not match for table {table}"
+			print(f"Starting to insert into {table} ({len(df)} rows)...")
+			insert_df_to_db(df, connection, table)
+		print("DONE")
+	except Exception as e:
+		print(f"Migration failed: {e}")
+```
+
+You'll just have to **provide the DB credentials** in a `.env` and provide the `./customers_df_filtered.csv` `./articles.csv` `./transaction_sample.csv` in the current directory.
+
+*==NOTE==: after downloading the dataset, checkout the `database/sample_transaction.ipynb` script to sample the dataset*
+
+The populate script is not very efficient so it take a bit of time to migrate everything but you get progression log every 5 sec.
+
+Once done, you can verify it worked properly with a query like that:
+```sql
+SELECT count(*) FROM transactions;
+```
+depending on the size of your sample, it should give you something like that:
+```
+  count  
+---------
+ 4768249
+(1 row)
+```
 
 ## 2) Gradio interface
 
