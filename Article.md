@@ -201,10 +201,10 @@ COMMENT ON TABLE transactions IS 'Records customer transactions, linking a custo
 
 
 ***Great !***
-we have our database migrations ready but now we want to deploy it.
-For that we'll use **the Koyeb** ***CLI*** to make it in just 1 command.
+we have our database migrations ready, now we want to deploy the database itself.
+For this, we'll use the ***Koyeb CLI*** to do it in just one command.
 
-With Koyeb we can create a PostgreSQL database like that:
+With Koyeb we can create a PostgreSQL database like so:
 ```sh
 koyeb databases create NAME [flags]
 ```
@@ -219,36 +219,40 @@ koyeb databases create koyeb_gradio_mcp \
 					
 ```
 
-***Voila***, our database is ready to accept connection.
+
+***Voila!***
+Our database is ready to accept connection.
 You can test that its working using the following command:
+
 ```bash
 psql <YOUR DATABASE_CONNECTION_STRING>
 ```
-then in the prompt, running the following command:
+
+Then in the prompt, run:
 ```sql
 hAndMdb=# SELECT datname FROM pg_database WHERE datistemplate = false;
 datname  
 ----------
  postgres
- hAndMdb // our database
+ hAndMdb -- our database
 (2 rows)
 ```
 
 - ##### Migrations
 
-Now we want to migrate the schema and the actual data.
-For the schema, we'll use the default public one, you can simply use psql with the `-f my_file` option like below with the migration file showed above:
+Now we want to migrate both the schema and the data.
+For the schema, we’re using the default public schema. You can simply use psql with the -f option to apply your SQL migration files, like so:
 ```shell
 psql <YOUR DATABASE_CONNECTION_STRING> -f database/00_init.sql
 psql <YOUR DATABASE_CONNECTION_STRING> -f database/01_comment_tables.sql
 ```
 
-Also, in the repository of the article, I left you with a `database/run_migration.py` script.
-It use `psycopg2` to connect to the DB, and run all migrations in a folder. It also create a table `migrations` that keep tracks of previous migrations, its convenient, **feel free to use it**.
+Also, in the repository of the article, I’ve included a `database/run_migration.py` script.
+It use `psycopg2` to connect to the DB, and run all migrations in a given folder. It also create a table `migrations` that keep tracks of previous migrations, it's handy, **feel free to use it**.
 
-Finally, to populate the DB with the H&M dataset *(or whatever dataset you want to use)* feel free to use your favorite method.
+Finally, to populate the database with the H&M dataset *(or any dataset you'd like)*, you can use your preferred method.
 
-**however**, I provided you with a `database/populate_db.py`.
+**however**, I’ve also provided a script: `database/populate_db.py`.
 ```python
 # Load environment variables from .env file
 load_dotenv()
@@ -287,17 +291,17 @@ if __name__ == "__main__":
 		print(f"Migration failed: {e}")
 ```
 
-You'll just have to **provide the DB credentials** in a `.env` and provide the `./customers_df_filtered.csv` `./articles.csv` `./transaction_sample.csv` in the current directory.
+You'll just need to **provide the DB credentials** in a `.env` and place the `./customers_df_filtered.csv` `./articles.csv` `./transaction_sample.csv` in the current directory.
 
 *==NOTE==: after downloading the dataset, checkout the `database/sample_transaction.ipynb` script to sample the dataset*
 
-The populate script is not very efficient so it take a bit of time to migrate everything but you get progression log every 5 sec.
+The populate script isn't super optimized, so it might take a little while to run but you'll get progress logs every 5 seconds.
 
-Once done, you can verify it worked properly with a query like that:
+Once done, you can verify that everything worked with a simple query:
 ```sql
 SELECT count(*) FROM transactions;
 ```
-depending on the size of your sample, it should give you something like that:
+Depending on your sample size, you should get something like:
 ```
   count  
 ---------
