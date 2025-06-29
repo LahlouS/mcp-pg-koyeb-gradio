@@ -224,13 +224,9 @@ You can test that its working using the following command:
 ```bash
 psql <YOUR DATABASE_CONNECTION_STRING>
 ```
-
 then in the prompt, running the following command:
 ```sql
-SELECT datname FROM pg_database WHERE datistemplate = false;
-```
-should give you something like that:
-```
+hAndMdb=# SELECT datname FROM pg_database WHERE datistemplate = false;
 datname  
 ----------
  postgres
