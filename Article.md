@@ -197,12 +197,12 @@ COMMENT ON TABLE transactions IS 'Records customer transactions, linking a custo
 
 ### How to easily deploy our database to Koyeb ?
 - #### Creation of the database
-==STILL NEED TO BE VERIFIED==
+
 
 
 ***Great !***
 we have our database migrations ready but now we want to deploy it.
-For that we'll use **koyeb** and it's ***CLI*** to make it in just 5 command.
+For that we'll use **the Koyeb** ***CLI*** to make it in just 1 command.
 
 With Koyeb we can create a PostgreSQL database like that:
 ```sh
