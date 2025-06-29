@@ -778,8 +778,36 @@ To keep this tutorial concise, I’m not showing the implementation details of t
 
 ### Deploying on Koyeb
 
-==NOT IMPLEMENTED YET==
+==STILL NEED TO BE VERIFIED==
+Finally, we want to deploy our server. For this, we'll use the Koyeb CLI, which allows us to deploy an app directly from the project directory.
 
+```shell
+koyeb deploy . \
+  gradio-mcp-server/main \
+  --instance-type small \
+  --region was \
+  --type web \
+  --min-scale 0 \
+  --max-scale 5 \
+  --autoscaling-concurrent-requests 5 \
+  --archive-buildpack-run-command "python app.py"
+```
+
+This command deploys the MCP server to Koyeb with [scale to zero](https://www.koyeb.com/docs/run-and-scale/scale-to-zero) and [autoscaling based on concurrent requests](https://www.koyeb.com/docs/run-and-scale/autoscaling) enabled. It runs on a small instance type in the Washington, D.C. region. After a few seconds, your MCP server should be up and running.
+
+Next, retrieve the public URL of your deployment. Run the following command in your terminal:
+
+```
+>> koyeb app get mcp-example-server
+ID      	NAME              	STATUS 	DOMAINS                                     	CREATED AT
+22284dd0	mcp-example-server	HEALTHY	["gradio-mcp-server-ed-e5f1a08a.koyeb.app"]	05 May 25 10:43 UTC
+```
+
+Copy the domain that ends with `.koyeb.app`.
+
+***And that's it.***
+you can now connect to `https://<REPLACE_ME>.koyeb.app`
+and check that you can properly access the Gradio interface.
 
 ### Testing the server
 
