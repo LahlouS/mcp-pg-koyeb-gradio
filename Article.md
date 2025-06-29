@@ -866,6 +866,7 @@ It’s a great foundation for building intelligent, context-aware assistants tha
 
 
 ***References:***
+- Koyeb CLI: [project directory](https://www.koyeb.com/docs/build-and-deploy/deploy-project-directory), [deploying database](https://www.koyeb.com/docs/build-and-deploy/cli/reference#koyeb-databases)
 - Dataset: [here](https://www.kaggle.com/competitions/h-and-m-personalized-fashion-recommendations/data) 
 - Gradio doc: [here](https://www.gradio.app/guides/building-mcp-server-with-gradio)
 - MCP official doc: [here](https://modelcontextprotocol.io/introduction)
