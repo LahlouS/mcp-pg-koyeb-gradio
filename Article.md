@@ -822,7 +822,7 @@ The configuration file is located in `~/Library/Application\ Support/Claude/clau
 {
   "mcpServers": {
     "gradio": {
-      "url": "https://<REPLACE_ME>.koyeb.app/mcp/sse"
+      "url": "https://<REPLACE_ME>.koyeb.app/gradio_api/mcp/sse"
     }
   }
 }
