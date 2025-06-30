@@ -364,7 +364,6 @@ with gr.Blocks(title="Database Operations") as tab2:
 			
 		with gr.Column(scale=2):
 			drop_table_status = gr.Textbox(label="drop table status")
-			output_image = gr.Image(label="🎨 Generated Visualization", type="filepath")
 	
 	# Event handlers for Tab 1
 	discover_btn.click(get_schemas, outputs=schema_info)

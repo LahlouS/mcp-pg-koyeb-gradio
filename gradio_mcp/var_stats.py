@@ -11,18 +11,31 @@ import numpy as np
 
 def anova(db_connection: DatabaseInterface, table_name, min_sample_size=0):
 	'''
-		the function runs the annova on the dataset and render the associated F_score and p_value
-		categories is a dict that represent the population measures list for each categories. it has the following pattern:
-		categories = {
-			"type_1": [x_0, x_1, ..., x_n],
-			"type_2": [x_0, x_1, ..., x_n],
-			"type_3": [x_0, x_1, ..., x_n],
-			...,
-			"type_n": [x_0, x_1, ..., x_n],
-		}
+		this function runs the annova on the dataset and render the associated F_score and p_value
+		Args:
+			table_name (str): the name of the table on which you want to run the ANOVA
+			min_sample_size (int): default = 0, is used to exclude categories that does not have enough measurement.
+		the selected table MUST have the following signature:
+
+		groups | measurement
+
+		exemple with the product_type_age table:
+
+		type | age
+		----------
+		'Coat', '36'
+		'Coat', '36'
+		'Hat/beanie', '32'
+		...
 
 		min_sample_size is used to exclude categories that does not have enough measurement.
 		default = 0: all categories are selected
+
+		return type is: dict
+		{
+			"F-statistic": round(f_stat, 3),
+			"p-value": round(p_value, 3)
+		}
 	'''
 	try: 
 		query = f"SELECT * FROM {table_name};"
@@ -50,21 +63,32 @@ def anova(db_connection: DatabaseInterface, table_name, min_sample_size=0):
 	}
 
 def tukey_test(db_connection: DatabaseInterface, table_name, min_sample_size=0):
-	"""
-	this function runs a Tukey's HSD (Honestly Significant Difference) test — a post-hoc analysis following ANOVA. 
-	It tells you which specific pairs of groups differ significantly in their means
-		categories is a dict that represent the population measures list for each categories. it has the following pattern:
-		categories = {
-			"type_1": [x_0, x_1, ..., x_n],
-			"type_2": [x_0, x_1, ..., x_n],
-			"type_3": [x_0, x_1, ..., x_n],
-			...,
-			"type_n": [x_0, x_1, ..., x_n],
-		}
+	'''
+		this function runs a Tukey's HSD (Honestly Significant Difference) test — a post-hoc analysis following ANOVA. 
+		It tells you which specific pairs of groups differ significantly in their means
+		IT is meant to be used after you run a successful anova and you obtain sgnificant F-satatistics and p-value
+		table_name is the name of the table on which you want to run the ANOVA
+		the selected table MUST have the following signature:
+
+		groups | measurement
+
+		exemple with the product_type_age table:
+
+		type | age
+		----------
+		'Coat', 36
+		'Coat', 36
+		'Hat/beanie', 32
+		...
 
 		min_sample_size is used to exclude categories that does not have enough measurement.
 		default = 0: all categories are selected
-	"""
+
+		the return result is the raw dataframe that correspond to the pair wize categorie that reject the hypothesis of non statistically difference between two group
+		the signature of the dataframe is the following:
+		group1 | group2 | meandiff p-adj | lower | upper | reject (only true)
+	
+	'''
 	try:
 		query = f"SELECT * FROM {table_name};"
 
