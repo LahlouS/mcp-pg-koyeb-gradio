@@ -211,11 +211,11 @@ koyeb databases create NAME [flags]
 
 In our case:
 ```sh
-koyeb databases create koyeb_gradio_mcp \
-					--app koyeb_gradio_mcp/hAndMdb \
-					--db-owner admin
-					--instance-type small
-					--pg-version 17
+koyeb databases create koyeb-gradio-mcp --app koyeb-gradio-mcp \
+                                        --db-name hAndMdb \
+                                        --db-owner admin \
+                                        --instance-type small \
+                                        --pg-version 17
 					
 ```
 
@@ -225,7 +225,8 @@ Our database is ready to accept connection.
 You can test that its working using the following command:
 
 ```bash
-psql <YOUR DATABASE_CONNECTION_STRING>
+>> koyeb database get <YOUR_DB_ID> # this will output your database connection string
+>> psql <YOUR_DB_CONNECTION_STRING>
 ```
 
 Then in the prompt, run:
@@ -782,8 +783,7 @@ To keep this tutorial concise, I’m not showing the implementation details of t
 Finally, we want to deploy our server. For this, we'll use the Koyeb CLI, which allows us to deploy an app directly from the project directory.
 
 ```shell
-koyeb deploy . \
-  gradio-mcp-server/main \
+koyeb deploy . gradio-mcp-server/mcp-server -d \ # -d for debug
   --instance-type small \
   --region was \
   --type web \
@@ -822,16 +822,24 @@ The configuration file is located in `~/Library/Application\ Support/Claude/clau
 {
   "mcpServers": {
     "gradio": {
-      "url": "https://<REPLACE_ME>.koyeb.app/mcp/sse"
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "https://<REPLACE_ME>.koyeb.app/gradio_api/mcp/sse",
+        "--transport",
+        "sse-only"
+      ]
     }
   }
 }
 ```
+*Note: You'll need Node.js for this config*
 
 Then reload Claude Desktop.
 
 You can then ask Claude all the basic task you'll want to do with this kind of database:
 here is a few prompts:
+- `Hey claude, connect to my DB using these credentials: DB_HOST USER PASSWORD DB_NAME`
 - `hey claude ! Discover the DB and give me key insights`
 - `give me the distribution of customers age`
 - `give me insight about the relation between age and product categories`
