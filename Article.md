@@ -782,8 +782,7 @@ To keep this tutorial concise, I’m not showing the implementation details of t
 Finally, we want to deploy our server. For this, we'll use the Koyeb CLI, which allows us to deploy an app directly from the project directory.
 
 ```shell
-koyeb deploy . \
-  gradio-mcp-server/main \
+koyeb deploy . gradio-mcp-server/mcp-server -d \ # -d for debug
   --instance-type small \
   --region was \
   --type web \
