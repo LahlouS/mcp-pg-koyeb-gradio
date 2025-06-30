@@ -225,7 +225,8 @@ Our database is ready to accept connection.
 You can test that its working using the following command:
 
 ```bash
-psql <YOUR DATABASE_CONNECTION_STRING>
+>> koyeb database get <your_db_id> # this will output your database connection string
+>> psql <YOUR DATABASE_CONNECTION_STRING>
 ```
 
 Then in the prompt, run:
