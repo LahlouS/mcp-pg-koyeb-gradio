@@ -211,11 +211,11 @@ koyeb databases create NAME [flags]
 
 In our case:
 ```sh
-koyeb databases create koyeb_gradio_mcp \
-					--app koyeb_gradio_mcp/hAndMdb \
-					--db-owner admin
-					--instance-type small
-					--pg-version 17
+koyeb databases create koyeb-gradio-mcp --app koyeb-gradio-mcp \
+                                        --db-name hAndMdb \
+                                        --db-owner admin \
+                                        --instance-type small \
+                                        --pg-version 17
 					
 ```
 
