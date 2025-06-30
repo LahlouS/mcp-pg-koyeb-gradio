@@ -6,14 +6,10 @@ from datetime import datetime
 import sys
 
 # Load environment variables from .env file
-load_dotenv()
 
-# Fetch environment variables
-DB_NAME = os.getenv("DB_NAME")
-DB_USER = os.getenv("POSTGRES_USER")
-DB_PASSWORD = os.getenv("POSTGRES_PASSWORD")
-DB_HOST = os.getenv("DB_HOST")
-DB_PORT = os.getenv("DB_PORT", 5432)
+
+
+
 
 
 # Connect to the PostgreSQL database
@@ -74,6 +70,16 @@ def run_migrations(path):
 		connection.close()
 
 if __name__ == "__main__":
+	if len(sys.argv) > 2:
+		load_dotenv(sys.argv[2])
+	else:
+		load_dotenv(sys.argv[2])
+	# Fetch environment variables
+	DB_NAME = os.getenv("DB_NAME")
+	DB_USER = os.getenv("POSTGRES_USER")
+	DB_PASSWORD = os.getenv("POSTGRES_PASSWORD")
+	DB_HOST = os.getenv("DB_HOST")
+	DB_PORT = os.getenv("DB_PORT", 5432)
 
 	print(sys.argv)
 

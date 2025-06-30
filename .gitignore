@@ -129,6 +129,7 @@ celerybeat.pid
 
 # Environments
 .env
+.env*
 .venv
 env/
 venv/
@@ -199,3 +200,6 @@ database/*.csv
 
 gradio_mcp/.gradio
 
+.koyeb.yaml
+
+tmp

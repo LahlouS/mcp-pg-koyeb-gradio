@@ -4,9 +4,11 @@ import psycopg2
 import pandas as pd
 import numpy as np
 import time
-
+import sys
 # Load environment variables from .env file
-load_dotenv()
+env_file = '.env' if len(sys.argv) == 1 else sys.argv[1]
+print(env_file)
+load_dotenv(env_file)
 
 # Fetch environment variables
 DB_NAME = os.getenv("DB_NAME")
@@ -76,41 +78,80 @@ def check_columns_in_df(df, columns):
 		return False
 	return True
 
-def insert_df_to_db(df, conn, table_name):
+def insert_df_to_db(df, conn, table_name, batch_size=1000):
 	cursor = conn.cursor()
 	table_columns = get_table_columns(conn, table_name)
 
 	# Ensure column order and compatibility
 	df_filtered = df.loc[:, [col for col in table_columns if col in df.columns]]
+	
+	if df_filtered.empty:
+		print("No matching columns found or dataframe is empty")
+		cursor.close()
+		return
 
 	columns = ', '.join(df_filtered.columns)
-	values = ', '.join([f"%({col})s" for col in df_filtered.columns])
-	insert_sql = f"INSERT INTO {table_name} ({columns}) VALUES ({values})"
+	placeholders = ', '.join(['%s'] * len(df_filtered.columns))
+	insert_sql = f"INSERT INTO {table_name} ({columns}) VALUES ({placeholders})"
 
 	total_rows = len(df_filtered)
 	inserted_rows = 0
+	skipped_rows = 0
 	start_time = time.time()
+	last_progress_time = start_time
 
-	for i, row in df_filtered.iterrows():
+	# Convert dataframe to list of tuples for batch processing
+	data_tuples = [tuple(row) for row in df_filtered.values]
+	
+	# Process in batches
+	for i in range(0, len(data_tuples), batch_size):
+		batch = data_tuples[i:i + batch_size]
+		
 		try:
-			cursor.execute(insert_sql, row.to_dict())
-			inserted_rows += 1
+			cursor.executemany(insert_sql, batch)
+			inserted_rows += len(batch)
+			
 		except psycopg2.IntegrityError as e:
-			print(f"Skipping row due to IntegrityError: {e}")
+			# If batch fails due to integrity error, try individual inserts for this batch
+			print(f"Batch insert failed, trying individual inserts for batch starting at row {i}: {e}")
 			conn.rollback()
-			continue
+			
+			for j, row_data in enumerate(batch):
+				try:
+					cursor.execute(insert_sql, row_data)
+					inserted_rows += 1
+				except psycopg2.IntegrityError as row_e:
+					print(f"Skipping row {i + j} due to IntegrityError: {row_e}")
+					skipped_rows += 1
+					conn.rollback()
+					continue
+				except Exception as row_e:
+					print(f"Error inserting row {i + j}: {row_e}")
+					skipped_rows += 1
+					conn.rollback()
+					continue
+					
 		except Exception as e:
-			print(f"Error inserting row: {e}\n***\n", row.to_dict())
+			print(f"Error with batch starting at row {i}: {e}")
 			conn.rollback()
+			skipped_rows += len(batch)
 			continue
 
-		if time.time() - start_time >= 5:
-			progress = (inserted_rows / total_rows) * 100
-			print(f"Progress: {progress:.2f}% ({inserted_rows}/{total_rows})")
-			start_time = time.time()
+		# Show progress every 5 seconds
+		current_time = time.time()
+		if current_time - last_progress_time >= 5:
+			progress = ((i + len(batch)) / total_rows) * 100
+			elapsed = current_time - start_time
+			rate = inserted_rows / elapsed if elapsed > 0 else 0
+			print(f"Progress: {progress:.2f}% ({inserted_rows}/{total_rows} inserted, {skipped_rows} skipped) - {rate:.0f} rows/sec")
+			last_progress_time = current_time
 
 	conn.commit()
 	cursor.close()
+	
+	final_time = time.time() - start_time
+	final_rate = inserted_rows / final_time if final_time > 0 else 0
+	print(f"Complete: {inserted_rows}/{total_rows} rows inserted, {skipped_rows} skipped in {final_time:.2f}s ({final_rate:.0f} rows/sec)")
 
 if __name__ == "__main__":
 	try:
