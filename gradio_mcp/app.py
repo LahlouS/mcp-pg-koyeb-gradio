@@ -438,4 +438,4 @@ if __name__ == "__main__":
 	print("🚀 Starting Database Analytics MCP Server...")
 	print(f"🌐 Dashboard: http://localhost:7860")
 	
-	interface.launch(server_name="0.0.0.0", server_port=7860, mcp_server=True)
+	interface.launch(server_name="0.0.0.0", server_port=8000, mcp_server=True)
