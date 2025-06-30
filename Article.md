@@ -822,11 +822,18 @@ The configuration file is located in `~/Library/Application\ Support/Claude/clau
 {
   "mcpServers": {
     "gradio": {
-      "url": "https://<REPLACE_ME>.koyeb.app/gradio_api/mcp/sse"
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "https://<REPLACE_ME>.koyeb.app/gradio_api/mcp/sse",
+        "--transport",
+        "sse-only"
+      ]
     }
   }
 }
 ```
+*Note: You'll need Node.js for this config*
 
 Then reload Claude Desktop.
 
