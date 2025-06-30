@@ -839,6 +839,7 @@ Then reload Claude Desktop.
 
 You can then ask Claude all the basic task you'll want to do with this kind of database:
 here is a few prompts:
+- `Hey claude, connect to my DB using these credentials: DB_HOST USER PASSWORD DB_NAME`
 - `hey claude ! Discover the DB and give me key insights`
 - `give me the distribution of customers age`
 - `give me insight about the relation between age and product categories`
