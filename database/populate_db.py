@@ -157,7 +157,7 @@ if __name__ == "__main__":
 	try:
 		customers_df = load_customers('./customers_filtered.csv')
 		articles_df = load_articles('./articles_filtered.csv')
-		transactions_df = load_transactions('./transaction_sample_2.csv')
+		transactions_df = load_transactions('./transaction_sample_3.csv')
 
 		# assert no_duplicate_in(customers_df, 'customer_id'), "Duplicate customer_id detected"
 		# assert no_duplicate_in(articles_df, 'article_id'), "Duplicate article_id detected"
