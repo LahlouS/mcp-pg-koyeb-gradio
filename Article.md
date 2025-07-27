@@ -372,6 +372,10 @@ class DatabaseInterface:
 from database_connector import DatabaseInterface
 import gradio as gr
 
+# Global state for database connection
+db_interface = None
+db_connection_status = "❌ Not Connected"
+
 def setup_database_connection(host: str, port: str, database: str, user: str, password: str):
 	"""Setup database connection with user-provided configuration"""
 	global db_interface, db_connection_status
